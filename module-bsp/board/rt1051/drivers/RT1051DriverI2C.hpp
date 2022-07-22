@@ -1,4 +1,4 @@
-// Copyright (c) 2017-2021, Mudita Sp. z.o.o. All rights reserved.
+// Copyright (c) 2017-2022, Mudita Sp. z.o.o. All rights reserved.
 // For licensing, see https://github.com/mudita/MuditaOS/LICENSE.md
 
 #ifndef PUREPHONE_RT1051DRIVERI2C_HPP
@@ -28,6 +28,8 @@ namespace drivers
 
         ssize_t Modify(const I2CAddress &addr, const uint32_t mask, bool setClr, const size_t size) override final;
 
+        status_t GetLastError() override final;
+
       private:
         status_t BOARD_LPI2C_Receive(LPI2C_Type *base,
                                      uint8_t deviceAddress,
@@ -45,6 +47,7 @@ namespace drivers
 
         LPI2C_Type *base;
         cpp_freertos::MutexStandard mutex;
+        status_t lastError;
     };
 
 } // namespace drivers

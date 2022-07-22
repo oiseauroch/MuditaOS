@@ -64,6 +64,7 @@ namespace drivers
         auto ret = BOARD_LPI2C_Send(
             base, addr.deviceAddress, addr.subAddress, addr.subAddressSize, const_cast<uint8_t *>(txBuff), size);
         if (ret != kStatus_Success) {
+            lastError = ret;
             return -1; // TODO:M.P: fix me
         }
         else {
@@ -76,11 +77,17 @@ namespace drivers
         cpp_freertos::LockGuard lock(mutex);
         auto ret = BOARD_LPI2C_Receive(base, addr.deviceAddress, addr.subAddress, addr.subAddressSize, rxBuff, size);
         if (ret != kStatus_Success) {
+            lastError = ret;
             return -1; // TODO:M.P: fix me
         }
         else {
             return size;
         }
+    }
+
+    status_t RT1051DriverI2C::GetLastError()
+    {
+        return lastError;
     }
 
     ssize_t RT1051DriverI2C::Modify(const drivers::I2CAddress &addr,
@@ -104,6 +111,7 @@ namespace drivers
         ret |= BOARD_LPI2C_Send(base, addr.deviceAddress, addr.subAddress, addr.subAddressSize, (uint8_t *)&rx, size);
 
         if (ret != kStatus_Success) {
+            lastError = ret;
             return -1; // TODO:M.P: fix me
         }
         else {

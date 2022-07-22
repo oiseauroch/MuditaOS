@@ -4,6 +4,8 @@
 #ifndef PUREPHONE_DRIVERI2C_HPP
 #define PUREPHONE_DRIVERI2C_HPP
 
+#include <fsl_common.h>
+
 #include <memory>
 #include <sys/types.h>
 
@@ -48,6 +50,8 @@ namespace drivers
         virtual ssize_t Read(const I2CAddress &addr, uint8_t *rxBuff, const size_t size) = 0;
 
         virtual ssize_t Modify(const I2CAddress &addr, const uint32_t mask, bool setClr, const size_t size) = 0;
+
+        virtual status_t GetLastError() = 0;
 
       protected:
         I2CInstances instance;
